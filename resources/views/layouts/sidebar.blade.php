@@ -8,9 +8,11 @@
 
         <li class="menu-sidebar"><a href="{{ route('supplier.index') }}"><span class="fa fa-calendar-minus-o"></span> Supplier </span></a></li>
 
-        <li class="menu-sidebar"><a href="{{ route('product.index') }}"><span class="fa fa-calendar-minus-o"></span> Produk </span></a></li>
+        <li class="menu-sidebar"><a href="{{ route('product.index') }}"><span class="fa fa-calendar-minus-o"></span> Product </span></a></li>
 
-        <li class="menu-sidebar"><a href="{{ route('purchase-order.index') }}"><span class="fa fa-calendar-minus-o"></span> Orders </span></a></li>
+        <li class="menu-sidebar"><a href="{{ route('purchase-order.index') }}"><span class="fa fa-calendar-minus-o"></span> Purchase Order </span></a></li>
+
+        <li class="menu-sidebar"><a href="{{ route('good-receipt.index') }}"><span class="fa fa-calendar-minus-o"></span> Good Receipt </span></a></li>
 
         <li class="menu-sidebar">
           <a class="dropdown-item" href="{{ route('logout') }}"onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><span class="glyphicon glyphicon-log-out">

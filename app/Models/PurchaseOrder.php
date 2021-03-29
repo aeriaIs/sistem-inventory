@@ -29,4 +29,8 @@ class PurchaseOrder extends Model
 
     	return $grand_total; 
     }
+
+    public function good_receipts() {
+        return $this->hasMany(GoodReceipt::class);
+    }
 }

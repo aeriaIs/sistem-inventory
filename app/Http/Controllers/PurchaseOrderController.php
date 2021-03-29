@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\{PurchaseOrder, Product, Supplier, PurchaseOrderDetail};
+use App\Models\{GoodReceipt, PurchaseOrder, Product, Supplier, PurchaseOrderDetail};
 
 class PurchaseOrderController extends Controller
 {
@@ -72,7 +72,7 @@ class PurchaseOrderController extends Controller
                 $sub_total = $buy_price * $qt;
 
                 $po_detail = PurchaseOrderDetail::insert([
-                    'purchase_id' => $purchase_id,
+                    'purchase_order_id' => $purchase_id,
                     'product_id' => $product[$key],
                     'qty' => $qt,
                     'buy_price' => $buy_price,
@@ -83,7 +83,7 @@ class PurchaseOrderController extends Controller
             }
             \Session::flash('success', 'Berhasil membuat purchase order.');
 
-            return redirect()->back();
+            return redirect(route('purchase-order.index'));
         } catch (\Exception $e) {
             \Session::flash('error', $e->getMessage());
 
@@ -157,7 +157,18 @@ class PurchaseOrderController extends Controller
                 $po->update([
                     'status_id' => 2
                 ]);
+
+                $receipt = GoodReceipt::insert([
+                    'purchase_order_id' => $po->id,
+                    'goodReceiptId' => \Str::random(5).'-'.time().'-'.\Str::random(4),
+                    'status_id' => 1,
+                    'created_at' => now(),
+                    'updated_at' => date('Y-m-d H:i:s'),
+                ]);
+
             }else {
+                $receipt = GoodReceipt::where('purchase_order_id', $po->id)->delete();
+
                 $po->update([
                     'status_id' => 1
                 ]);
@@ -180,6 +191,34 @@ class PurchaseOrderController extends Controller
             $po_detail->delete();
 
             \Session::flash('success', 'Item Berhasil dihapus dari daftar.');
+        } catch (\Exception $e) {
+            \Session::flash('error', $e->getMessage());
+
+        }
+
+        return redirect()->back();
+    }
+
+    public function updateQty(Request $request, $id) {
+        try {
+            $quantity = $request->qty;
+            $order_detail_id = $request->detail_id;
+            $buy_price = $request->buy_price;
+            $products = $request->products;
+
+            foreach($quantity as $key => $qty) {
+                $data['qty'] = $qty;
+                $data['sub_total'] = $qty * $buy_price[$key];
+                $data['buy_price'] = $buy_price[$key];
+                $detail_id = $order_detail_id[$key];
+
+                PurchaseOrderDetail::where('id', $detail_id)->update($data);
+                Product::where('id', $products[$key])->update([
+                    'buy_price' => $data['buy_price'],
+                ]);
+            }
+
+            \Session::flash('success', 'Item Berhasil diperbarui..');
         } catch (\Exception $e) {
             \Session::flash('error', $e->getMessage());
 

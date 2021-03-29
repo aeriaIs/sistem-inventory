@@ -27,4 +27,9 @@ Route::group(['middleware' => 'auth'], function() {
 	Route::get('/purchase-order/product/{supplier}', 'PurchaseOrderController@getProduct')->name('purchase-order.product');
 	Route::patch('/purchase-order/approve/{id}', 'PurchaseOrderController@approve')->name('purchase-order.approve');
 	Route::delete('/purchase-order/delete-item/{id}', 'PurchaseOrderController@deleteItem')->name('purchase-order.delete-item');
+	Route::patch('/purchase-order/update-qty/{id}', 'PurchaseOrderController@updateQty')->name('purchase-order.update-qty');
+
+	//Manage GoodReceipt
+	Route::resource('/good-receipt', 'GoodReceiptController');
+	Route::patch('/good-receipt/approve/{id}', 'GoodReceiptController@approve')->name('good-receipt.approve');
 }); 

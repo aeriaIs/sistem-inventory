@@ -49,7 +49,7 @@
                                         @csrf
                                         @method('PATCH')
                                         <input type="hidden" name="status_id" value="1"/>
-                                        <button type="submit" class="btn btn-sm btn-success btn-block confirm-main" onclick="return confirm('Apakah anda ingin menyetujui order?')"> Approved </button>
+                                        <button type="submit" class="btn btn-sm btn-success btn-block confirm-main" onclick="return confirm('Apakah anda ingin membatalkan penyetujuan order?')"> Approved </button>
                                     </form>
                                 </td>
                                 @endif
